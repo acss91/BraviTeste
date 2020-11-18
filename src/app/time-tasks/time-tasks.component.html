@@ -1,0 +1,223 @@
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <h4>Describe Hours</h4>
+    <div class="alinha">
+      <form [formGroup]="select">
+        <label for="Select the Hour:">Select the hour</label>
+        <select
+          class="form-control"
+          name="select"
+          id="select"
+          formControlName="select"
+          (change)="loadHours()"
+        >
+          <option value="">Select</option>
+          <option [ngValue]="" *ngFor="let hour of arrayHours">{{
+            hour
+          }}</option>
+        </select>
+      </form>
+    </div>
+    <div class="alinha">
+    <form [formGroup]="select2">
+      <label for="Select the Minute:">Select the Minute</label>
+      <select
+        class="form-control"
+        name="select2"
+        id="select2"
+        formControlName="select"
+        (change)="loadHours()"
+      >
+        <option value="">Select</option>
+        <option [ngValue]="" *ngFor="let m of arrayMinutes">{{
+          m
+        }}</option>
+      </select>
+    </form>
+  </div>  
+  <h3>{{hourtime.hour}}</h3>
+<hr>
+  
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4>Tasks List</h4>
+    </div>
+    <div class="panel-body">
+      <button class="btn btn-success ml-3" data-toggle="modal" data-target="#modal">ADD TASK</button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>TASK</th>
+            <th>DAY</th>
+            <th>HOUR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let activity of activities | async">
+            <td>{{activity.id}}</td>
+            <td>{{activity.activity}}</td>
+            <td>{{activity.day_month}}</td>
+            <td>{{activity.hour_day}}</td>
+            <td><button (click)="deleteTask(activity.id)" class="btn btn-danger">Delete</button>
+            <td><button (click)="updateTask(activity.id)" class="btn btn-info" style="margin-left: 10px" data-toggle="modal" data-target="#edit">Edit</button></td>
+          </tr>
+        </tbody>
+      </table>
+     
+    </div>
+  </div>
+  <hr>
+  <h4>Spend Time on Task</h4>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>CURRENT TASK</th>
+          <th>REMAIN HOUR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{currentAc.activity}}</td>
+          <td>{{currentAc.hour_day}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button (click)="showcurrentTask()" class="btn btn-info" style="margin-left: 10px">Atualiza</button>
+  </div>
+  <div id="modal" class="modal fade"  role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">ADD</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div [hidden]="submitted" style="width: 400px;">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group ml-3">
+              <label for="name">Id Number</label>
+              <input type="text" class="form-control" id="id" required [(ngModel)]="activity.id" name="id">
+            </div>
+        
+            <div class="form-group ml-3">
+              <label for="name">Task</label>
+              <input type="text" class="form-control" id="activity" required [(ngModel)]="activity.activity" name="activity">
+            </div>
+        
+            <div class="form-group ml-3">
+              <label for="name">Day to Start</label>
+              <input type="text" class="form-control" id="day_month" required [(ngModel)]="activity.day_month" name="day_month">
+            </div>
+            <div class="form-group ml-3">
+              <label for="name">Hour</label>
+              <input type="text" class="form-control" id="hour_day" required [(ngModel)]="activity.hour_day" name="hour_day">
+            </div>
+            <div class="form-group ml-3">
+              <label for="name">Amount of Hours for Day</label>
+              <input type="text" class="form-control" id="time_activity" required [(ngModel)]="activity.time_activity" name="time_activity">
+            </div>
+            <button type="submit" class="btn btn-success ml-3">ADD</button>
+          </form>
+        </div>
+       
+        <div [hidden]="!submitted">
+          <h4>You submitted successfully!</h4>
+          <!-- <button class="btn btn-success" (click)="newEmployee()">Add</button> -->
+        </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+    <div id="edit" class="modal fade"  role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">EDIT</h5>
+            <button type="button" class="close" data-dismiss="edit" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div [hidden]="submitted" style="width: 400px;">
+            <form (ngSubmit)="onEditSubmit()">
+              <div class="form-group ml-3">
+                <label for="name">Id Number</label>
+                <input type="text" class="form-control" id="id" required [(ngModel)]="updateAc.id" name="id">
+              </div>
+          
+              <div class="form-group ml-3">
+                <label for="name">Task</label>
+                <input type="text" class="form-control" id="activity" required [(ngModel)]="updateAc.activity" name="activity">
+              </div>
+          
+              <div class="form-group ml-3">
+                <label for="name">Day to Start</label>
+                <input type="text" class="form-control" id="day_month" required [(ngModel)]="updateAc.day_month" name="day_month">
+              </div>
+              <div class="form-group ml-3">
+                <label for="name">Hour</label>
+                <input type="text" class="form-control" id="hour_day" required [(ngModel)]="updateAc.hour_day" name="hour_day">
+              </div>
+              <div class="form-group ml-3">
+                <label for="name">Amount of Hours for Day</label>
+                <input type="text" class="form-control" id="time_activity" required [(ngModel)]="updateAc.time_activity" name="time_activity">
+              </div>
+              <button type="submit" class="btn btn-success ml-3">Edit</button>
+            </form>
+          </div>
+         
+          <div [hidden]="!submitted">
+            <h4>You submitted successfully!</h4>
+            <!-- <button class="btn btn-success" (click)="newEmployee()">Add</button> -->
+          </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+  
+  <hr>
